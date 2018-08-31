@@ -43,7 +43,7 @@ simple KBasicUBM like IUBM
         
          
       	// signals for statistics received
-		@signal[angryBitSignal](type="int");
+		@signal[angryBitSignal](type="long");
 		
       	// statistics collected  
         @statistic[angryBitSignal](title="Angry Bit Set"; source="angryBitSignal"; record=vector);
