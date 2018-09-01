@@ -29,6 +29,9 @@ void KWirelessInterfaceWithoutND::initialize(int stage)
 
         neighborDiscovery = check_and_cast<IKNeighborDiscovery *>(getParentModule()->getSubmodule("neigh"));
 
+        WATCH(numSent);
+        WATCH(numReceived);
+
     } else if (stage == 1) {
 
         // nothing
@@ -100,7 +103,7 @@ void KWirelessInterfaceWithoutND::handleMessage(cMessage *msg)
 
             // send msg to upper layer
             send(msg, "upperLayerOut");
-
+            numReceived++;
         }
     }
 }
@@ -166,6 +169,7 @@ void KWirelessInterfaceWithoutND::sendPendingMsg()
 
                 // send to node
                 sendDirect(outPktCopy, currentNeighbourNodeInfo->nodeModule, "radioIn");
+                numSent++;
 
                 break;
             }
@@ -220,6 +224,9 @@ string KWirelessInterfaceWithoutND::getDestinationAddress(cMessage *msg)
 
 void KWirelessInterfaceWithoutND::finish()
 {
+    recordScalar("numSent", numSent);
+    recordScalar("numReceived", numReceived);
+
     // // remove send msg timeout
     // if (sendPacketTimeoutEvent->isScheduled()) {
     //     cancelEvent(sendPacketTimeoutEvent);

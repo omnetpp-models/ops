@@ -62,6 +62,9 @@ class KWirelessInterfaceWithoutND: public cSimpleModule
         cMessage *currentPendingMsg;
         IKNeighborDiscovery *neighborDiscovery;
 
+        long numSent = 0;
+        long numReceived = 0;
+
         void setupSendingMsg(cMessage *msg);
         void sendPendingMsg();
         string getDestinationAddress(cMessage *msg);

@@ -65,6 +65,9 @@ class KWirelessInterface: public cSimpleModule
         list<KBaseNodeInfo*> atTxNeighbourNodeInfoList;
         cMessage *currentPendingMsg;
 
+        long numSent = 0;
+        long numReceived = 0;
+
         void setupSendingMsg(cMessage *msg);
         void sendPendingMsg();
         string getDestinationAddress(cMessage *msg);

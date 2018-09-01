@@ -116,6 +116,8 @@ void KNeighborDiscovery::handleMessage(cMessage *msg)
         // if there are neighbours, send message
         if (currentNeighbourNodeInfoList.size() > 0) {
 
+            getParentModule()->bubble((to_string(currentNeighbourNodeInfoList.size())+" neighbors").c_str());
+
             // build message
             int neighCount = 0;
 
@@ -153,3 +155,6 @@ void KNeighborDiscovery::handleMessage(cMessage *msg)
     }
 }
 
+void KNeighborDiscovery::refreshDisplay() const
+{
+}

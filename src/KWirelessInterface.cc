@@ -31,6 +31,8 @@ void KWirelessInterface::initialize(int stage)
         // set other parameters
         broadcastMACAddress = "FF:FF:FF:FF:FF:FF";
 
+        WATCH(numSent);
+        WATCH(numReceived);
 
     } else if (stage == 1) {
 
@@ -138,6 +140,8 @@ void KWirelessInterface::handleMessage(cMessage *msg)
         // if there are neighbours, send message
         if (currentNeighbourNodeInfoList.size() > 0) {
 
+            getParentModule()->bubble((to_string(currentNeighbourNodeInfoList.size())+" neighbors").c_str());
+
             // build message
             int neighCount = 0;
 
@@ -219,6 +223,7 @@ void KWirelessInterface::handleMessage(cMessage *msg)
 
             // send msg to upper layer
             send(msg, "upperLayerOut");
+            numReceived++;
 
         }
     }
@@ -281,6 +286,7 @@ void KWirelessInterface::sendPendingMsg()
 
                 // send to node
                 sendDirect(outPktCopy, currentNeighbourNodeInfo->nodeModule, "radioIn");
+                numSent++;
 
                 break;
             }
@@ -335,6 +341,9 @@ string KWirelessInterface::getDestinationAddress(cMessage *msg)
 
 void KWirelessInterface::finish()
 {
+    recordScalar("numSent", numSent);
+    recordScalar("numReceived", numReceived);
+
     // // remove send msg timeout
     // if (sendPacketTimeoutEvent->isScheduled()) {
     //     cancelEvent(sendPacketTimeoutEvent);

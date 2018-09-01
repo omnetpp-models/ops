@@ -50,6 +50,7 @@ class KNeighborDiscovery: public cSimpleModule, public IKNeighborDiscovery
         virtual void initialize(int stage);
         virtual void handleMessage(cMessage *msg);
         virtual int numInitStages() const { return 3; }
+        virtual void refreshDisplay() const;
 
     private:
         double wirelessRange;
