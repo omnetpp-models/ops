@@ -21,7 +21,7 @@ module KUBMNode
 
         // unique node identifier
         int nodeID;
-        
+
         // user behaviour model used
         string userBahaviourModel = default("KBasicUBM");
 
@@ -43,28 +43,28 @@ module KUBMNode
         string ownAddress = "02:0" + string(this.digit1) + ":0" + string(this.digit2) + ":0" + string(this.digit3) + ":0" + string(this.digit4) + ":0" + string(this.digit5);
         *.ownMACAddress = ownAddress;
 
-		// mobility model used
-		string mobilityType = default("SWIMMobility");
+        // mobility model used
+        string mobilityType = default("SWIMMobility");
 
         // icon
         @display("i=device/palm2;bgb=290,400");
 
     gates:
         input radioIn @directIn;
-		input notificationGenIn @directIn;
+        input notificationGenIn @directIn;
 
     submodules:
 
-		// user behavior model
-		ubm: <userBahaviourModel> like IUBM {
-			parameters:
-				@display("p=180,50;t=UserBehavior,r,blue");
-		}
+        // user behavior model
+        ubm: <userBahaviourModel> like IUBM {
+            parameters:
+                @display("p=180,50;t=UserBehavior,r,blue");
+        }
 
         // application layer
         app: <userBahaviourApp> like IUBMApp {
             parameters:
-				nodeIndex = nodeID;
+                nodeIndex = nodeID;
                 @display("p=90,50;t=UBMApp,l,blue");
         }
 
@@ -80,24 +80,28 @@ module KUBMNode
                 @display("p=90,250;t=PassThru,l,blue");
         }
 
+        neigh: <default("")> like IKNeighborDiscovery if typename != "" {
+            @display("p=179.34,249.90001");
+        }
+
         // wifi adhoc interface
-        link: KWirelessInterface {
+        link: <default("KWirelessInterface")> like IKWirelessInterface {
             parameters:
                 ownMACAddress = ownAddress;
                 @display("p=90,350;t=WirelessIfc,l,blue");
         }
 
-		// mobility 
-		mobility: <mobilityType> like IMobility {
-                @display("p=180,350;t=ReactiveSWIM,t,blue");
+        // mobility 
+        mobility: <mobilityType> like IMobility {
+            @display("p=180,350;t=ReactiveSWIM,t,blue");
         }
 
     connections allowunconnected:
 
-		// gate connections between user behavior and application layer
-		ubm.lowerLayerIn <-- app.upperLayerOut;
-		ubm.lowerLayerOut --> app.upperLayerIn;
-		
+        // gate connections between user behavior and application layer
+        ubm.lowerLayerIn <-- app.upperLayerOut;
+        ubm.lowerLayerOut --> app.upperLayerIn;
+
         // gate connections between application and forwarding layer
         app.lowerLayerIn <-- forwarding.upperLayerOut;
         app.lowerLayerOut --> forwarding.upperLayerIn;
@@ -115,5 +119,6 @@ module KUBMNode
         // direcly to other nodes
         link.lowerLayerIn <-- radioIn;
 
-		ubm.notificationGeneratorIn <-- notificationGenIn;
+        ubm.notificationGeneratorIn <-- notificationGenIn;
+        neigh.upperLayerOut --> linkAdapt.neighborListIn if exists(neigh);
 }
