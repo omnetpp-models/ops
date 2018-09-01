@@ -49,7 +49,6 @@ class KWirelessInterfaceWithoutND: public cSimpleModule
 
     private:
         string ownMACAddress;
-        double wirelessRange;
         double bandwidthBitRate;
         int wirelessHeaderSize;
         int logging;

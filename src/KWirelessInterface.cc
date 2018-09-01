@@ -70,15 +70,8 @@ void KWirelessInterface::initialize(int stage)
             nodeInfo->nodeModule = unknownModule;
 
             // find the wireless ifc module & mobility module
-            for (cModule::SubmoduleIterator it(unknownModule); !it.end(); ++it) {
-
-                if (dynamic_cast<inet::IMobility*>(*it) != NULL) {
-                    nodeInfo->nodeMobilityModule = dynamic_cast<inet::IMobility*>(*it);
-                }
-                if (dynamic_cast<KWirelessInterface*>(*it) != NULL) {
-                    nodeInfo->nodeWirelessIfcModule = dynamic_cast<KWirelessInterface*>(*it);
-                }
-            }
+            nodeInfo->nodeWirelessIfcModule = unknownModule->getSubmodule("link");
+            nodeInfo->nodeMobilityModule = dynamic_cast<inet::IMobility*>(unknownModule->getSubmodule("mobility"));
 
             // wireless ifc module & mobility module must be present, else something wrong
             if (nodeInfo->nodeMobilityModule == NULL || nodeInfo->nodeWirelessIfcModule == NULL) {

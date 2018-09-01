@@ -25,10 +25,7 @@ class KBaseNodeInfo
 
         cModule *nodeModule;
 		inet::IMobility *nodeMobilityModule;
-		KWirelessInterface *nodeWirelessIfcModule;
-
-
-
+		cModule *nodeWirelessIfcModule;  //TODO unused (write access only?)
 };
 
 #endif /* KBASENODEINFO_H_ */
