@@ -18,7 +18,7 @@ using namespace std;
 
 class KWirelessInterface;
 
-class KBaseNodeInfo
+class KBaseNodeInfo : public cObject
 {
     public:
         string nodeAddress;

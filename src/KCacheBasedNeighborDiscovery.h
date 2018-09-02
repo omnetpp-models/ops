@@ -14,8 +14,8 @@
 // @author: Asanga Udugama (adu@comnets.uni-bremen.de)
 //
 
-#ifndef KNEIGHBORDISCOVERY_H_
-#define KNEIGHBORDISCOVERY_H_
+#ifndef KCACHEBASEDNEIGHBORDISCOVERY_H_
+#define KCACHEBASEDNEIGHBORDISCOVERY_H_
 
 #define TRUE                            1
 #define FALSE                           0
@@ -31,26 +31,28 @@
 using namespace omnetpp;
 #endif
 
-#include "KInternalMsg_m.h"
 #include "IKNeighborDiscovery.h"
+
+class INeighborCache;
 
 using namespace std;
 
-class KNeighborDiscovery: public cSimpleModule, public IKNeighborDiscovery
+class KCacheBasedNeighborDiscovery: public cSimpleModule, public IKNeighborDiscovery
 {
     protected:
+        virtual ~KCacheBasedNeighborDiscovery();
         virtual void initialize(int stage);
         virtual void handleMessage(cMessage *msg);
         virtual int numInitStages() const { return 3; }
-        virtual void refreshDisplay() const;
 
     private:
         double wirelessRange;
-        string expectedNodeTypes;
         double neighbourScanInterval;
-        KBaseNodeInfo *ownNodeInfo;
-        list<KBaseNodeInfo*> allNodeInfoList;
+        cMessage *neighborScanEvent = nullptr;
+        KBaseNodeInfo *ownNodeInfo = nullptr;
+        std::string ownAddress;
         list<KBaseNodeInfo*> currentNeighbourNodeInfoList;
+        INeighborCache *neighborCache = nullptr;
 
     public:
         virtual const list<KBaseNodeInfo*>& getCurrentNeighbourNodeInfoList() const {return currentNeighbourNodeInfoList;}
