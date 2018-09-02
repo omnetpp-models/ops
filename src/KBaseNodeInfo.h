@@ -21,7 +21,7 @@ class KWirelessInterface;
 class KBaseNodeInfo : public cObject
 {
     public:
-        string nodeAddress;
+        //string nodeAddress; TODO unused
 
         cModule *nodeModule;
 		inet::IMobility *nodeMobilityModule;
