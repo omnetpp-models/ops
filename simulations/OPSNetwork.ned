@@ -5,21 +5,26 @@ import ops.*;
 
 network OPSNetwork
 {
-   
     parameters:
-    
+
         // number of nodes in the network
         int numNodes = default(20);
-        
+
         // type of forwarding layer used
         string notificationGen = default("KBasicNotificationGenerator");
-       
+
     submodules:
 
         // nodes of the network
         host[numNodes]: KUBMNode {
             nodeID = index;
         }
-       
-       notificationGenerator: <notificationGen> like INotificationGenerator;
+
+        notificationGenerator: <notificationGen> like INotificationGenerator {
+            @display("p=40,50");
+        }
+
+        neighborCache: <default("")> like INeighborCache if typename != "" {
+            @display("p=200,50");
+        }
 }
